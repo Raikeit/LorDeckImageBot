@@ -1,0 +1,3 @@
+[submodule "3rdparty\\LoRDeckCodes"]
+	path = 3rdparty\\LoRDeckCodes
+	url = https://github.com/RiotGames/LoRDeckCodes

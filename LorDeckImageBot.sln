@@ -3,21 +3,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LorDeckImage", "LorDeckImage\LorDeckImage.csproj", "{87CF42B4-1A4A-42D9-97CC-F71EE4DB3580}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LorDeckImage", "LorDeckImage\LorDeckImage.csproj", "{87CF42B4-1A4A-42D9-97CC-F71EE4DB3580}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3rdparty", "3rdparty", "{677BE380-6DE7-4B81-BAE5-F016C43E357F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LoRDeckCodes", "LoRDeckCodes", "{68E8CD81-DBFF-4EB5-88BF-73FA7E383FA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoRDeckCodes", "3rdparty\LoRDeckCodes\LoRDeckCodes\LoRDeckCodes.csproj", "{43E9A3E5-740F-444B-82DF-5C21A1390BBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoRDeckCodes", "3rdparty\LoRDeckCodes\LoRDeckCodes\LoRDeckCodes.csproj", "{43E9A3E5-740F-444B-82DF-5C21A1390BBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordBot", "DiscordBot\DiscordBot.csproj", "{48F7695D-15ED-4AF0-B2D8-458D5536A662}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{87CF42B4-1A4A-42D9-97CC-F71EE4DB3580}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -28,9 +27,19 @@ Global
 		{43E9A3E5-740F-444B-82DF-5C21A1390BBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43E9A3E5-740F-444B-82DF-5C21A1390BBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43E9A3E5-740F-444B-82DF-5C21A1390BBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48F7695D-15ED-4AF0-B2D8-458D5536A662}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48F7695D-15ED-4AF0-B2D8-458D5536A662}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48F7695D-15ED-4AF0-B2D8-458D5536A662}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48F7695D-15ED-4AF0-B2D8-458D5536A662}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{68E8CD81-DBFF-4EB5-88BF-73FA7E383FA3} = {677BE380-6DE7-4B81-BAE5-F016C43E357F}
 		{43E9A3E5-740F-444B-82DF-5C21A1390BBE} = {68E8CD81-DBFF-4EB5-88BF-73FA7E383FA3}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9A9CD710-07F7-4E85-9C91-5C44E29BC018}
 	EndGlobalSection
 EndGlobal

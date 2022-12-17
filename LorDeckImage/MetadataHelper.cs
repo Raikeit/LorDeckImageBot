@@ -44,6 +44,7 @@ namespace LorDeckImage
     {
         public static void download(MetadataUrl metadataUrl){
             // TODO: metadata/ja_jp/ フォルダ化にzipファイルをダウンロード&展開する
+            // TODO: 毎回ダウンロードするのは重いので、手動でアップデートしたい時だけダウンロードするようにしたい。
         }
     }
 }

@@ -7,13 +7,13 @@ namespace LorDeckImage
     {
         public List<Card> Cards = new List<Card>();
 
-        public Deck(string deckcode)
+        public Deck(string deckcode, Metadata metadata)
         {
             List<CardCodeAndCount> cardCodeAndCounts = LoRDeckEncoder.GetDeckFromCode(deckcode);
 
             foreach (CardCodeAndCount cardCodeAndCount in cardCodeAndCounts)
             {
-                this.Cards.Add(new Card(cardCodeAndCount));
+                this.Cards.Add(new Card(cardCodeAndCount, metadata));
             }
         }
 

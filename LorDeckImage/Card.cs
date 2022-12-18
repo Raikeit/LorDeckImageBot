@@ -10,11 +10,11 @@
 
         public string ImgPath { get; set; }
 
-        public Card(CardCodeAndCount cardCodeAndCount, MetadataUrl metadataUrl)
+        public Card(CardCodeAndCount cardCodeAndCount, Metadata metadata)
         {
             this.code = cardCodeAndCount.CardCode;
             this.Count = cardCodeAndCount.Count;
-            this.ImgPath = Path.Combine(metadataUrl.CardImgDirPath, this.code + "." + metadataUrl.ImgExt);
+            this.ImgPath = Path.Combine(metadata.CardImgDirPath, this.code + "." + metadata.ImgExt);
         }
 
         // public Image getImage()

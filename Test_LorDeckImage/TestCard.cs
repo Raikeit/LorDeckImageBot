@@ -9,7 +9,8 @@
         {
             string deckcode = "CEBQCAIBEIBACBI6GEDQMBIMBUHBAHBAEYBQCAIFFAAQIAIMAIAQCAZKAIAQCBIZAECACCQ";
 
-            Deck deck = new Deck(deckcode);
+            Metadata metadata = MetadataHelper.GetMetadataUrl("ja_jp");
+            Deck deck = new Deck(deckcode, metadata);
             Card card = deck.Cards.First();
 
             Assert.NotNull(card);

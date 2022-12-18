@@ -7,7 +7,7 @@
     using System.IO.Compression;
     using Microsoft.VisualBasic.FileIO;
 
-    public abstract class MetadataUrl
+    public abstract class Metadata
     {
         public string metadataDirPath => "metadata";
 
@@ -29,7 +29,7 @@
         public string ImgExt => "png";
     }
 
-    public class MetadataUrlEnUs : MetadataUrl
+    public class MetadataEnUs : Metadata
     {
         public override string Locale => "en_us";
         public override string CoreSet => "https://dd.b.pvp.net/latest/core-en_us.zip";
@@ -47,7 +47,7 @@
         public override string CardImgDirPath => Path.Combine(this.metadataDirPath, this.Locale, "cards");
     }
 
-    public class MetadataUrlJaJp : MetadataUrl
+    public class MetadataJaJp : Metadata
     {
         public override string Locale => "ja_jp";
 
@@ -69,9 +69,9 @@
 
     public class MetadataHelper
     {
-        public static void Download(MetadataUrl metadataUrl)
+        public static void Download(Metadata metadata)
         {
-            string dirPath = Path.Combine(metadataUrl.metadataDirPath, metadataUrl.Locale);
+            string dirPath = Path.Combine(metadata.metadataDirPath, metadata.Locale);
             if (!Directory.Exists(dirPath))
             {
                 new DirectoryInfo(dirPath).Create();
@@ -83,21 +83,21 @@
                 di.Create();
             }
 
-            string extractedDirPath = Path.Combine(dirPath, metadataUrl.CoreSetFileName);
+            string extractedDirPath = Path.Combine(dirPath, metadata.CoreSetFileName);
             string downloadedZipPath = extractedDirPath + ".zip";
-            DownloadFile(metadataUrl.CoreSet, downloadedZipPath).Wait();
+            DownloadFile(metadata.CoreSet, downloadedZipPath).Wait();
             ZipFile.ExtractToDirectory(downloadedZipPath, extractedDirPath);
             File.Delete(downloadedZipPath);
-            MergeSet(extractedDirPath, dirPath, metadataUrl.Locale);
+            MergeSet(extractedDirPath, dirPath, metadata.Locale);
 
-            foreach (var dataSet in metadataUrl.SetsFileNames.Zip(metadataUrl.Sets))
+            foreach (var dataSet in metadata.SetsFileNames.Zip(metadata.Sets))
             {
                 extractedDirPath = Path.Combine(dirPath, dataSet.First);
                 downloadedZipPath = extractedDirPath + ".zip";
                 DownloadFile(dataSet.Second, downloadedZipPath).Wait();
                 ZipFile.ExtractToDirectory(downloadedZipPath, extractedDirPath);
                 File.Delete(downloadedZipPath);
-                MergeSet(extractedDirPath, dirPath, metadataUrl.Locale);
+                MergeSet(extractedDirPath, dirPath, metadata.Locale);
             }
 
 
@@ -108,18 +108,18 @@
             Download(GetMetadataUrl(locale));
         }
 
-        public static MetadataUrl GetMetadataUrl(string locale)
+        public static Metadata GetMetadataUrl(string locale)
         {
             switch (locale)
             {
                 case "ja_jp":
-                    return new MetadataUrlJaJp();
+                    return new MetadataJaJp();
 
                 case "en_us":
-                    return new MetadataUrlEnUs();
+                    return new MetadataEnUs();
 
                 default:
-                    return new MetadataUrlEnUs();
+                    return new MetadataEnUs();
             }
         }
 

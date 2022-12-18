@@ -32,7 +32,9 @@
     public class MetadataEnUs : Metadata
     {
         public override string Locale => "en_us";
+
         public override string CoreSet => "https://dd.b.pvp.net/latest/core-en_us.zip";
+
         public override List<string> Sets => new List<string>
         {
             "https://dd.b.pvp.net/latest/set1-en_us.zip",
@@ -99,8 +101,6 @@
                 File.Delete(downloadedZipPath);
                 MergeSet(extractedDirPath, dirPath, metadata.Locale);
             }
-
-
         }
 
         public static void Download(string locale)

@@ -1,16 +1,16 @@
-﻿using LoRDeckCodes;
-
-namespace LorDeckImage
+﻿namespace LorDeckImage
 {
+    using LoRDeckCodes;
+
     class Card
     {
-        private String code;
-        public int count;
+        private string code;
+        public int Count;
 
         public Card(CardCodeAndCount cardCodeAndCount)
         {
             this.code = cardCodeAndCount.CardCode;
-            this.count = cardCodeAndCount.Count;
+            this.Count = cardCodeAndCount.Count;
             // TODO: カード画像へのリンクを持つ
         }
 

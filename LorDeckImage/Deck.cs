@@ -5,16 +5,15 @@ namespace LorDeckImage
 {
     class Deck
     {
-        public List<Card> cards;
+        public List<Card> Cards = new List<Card>();
 
-        public Deck(String deckcode)
+        public Deck(string deckcode)
         {
-            var cardCodeAndCounts = LoRDeckEncoder.GetDeckFromCode(deckcode);
-            cards = new List<Card>();
+            List<CardCodeAndCount> cardCodeAndCounts = LoRDeckEncoder.GetDeckFromCode(deckcode);
 
-            foreach(CardCodeAndCount cardCodeAndCount in cardCodeAndCounts)
+            foreach (CardCodeAndCount cardCodeAndCount in cardCodeAndCounts)
             {
-                cards.Add(new Card(cardCodeAndCount));
+                this.Cards.Add(new Card(cardCodeAndCount));
             }
         }
 

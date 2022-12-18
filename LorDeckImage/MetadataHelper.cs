@@ -5,16 +5,18 @@ namespace LorDeckImage
 {
     public abstract class MetadataUrl
     {
-        public abstract String locale { get; }
-        public abstract String coreSet { get; }
-        public abstract List<String> sets { get; }
+        public abstract string Locale { get; }
+
+        public abstract string CoreSet { get; }
+
+        public abstract List<string> Sets { get; }
     }
 
     public class MetadataUrlEnUs : MetadataUrl
     {
-        public override String locale => "en_us";
-        public override String coreSet => "https://dd.b.pvp.net/latest/core-en_us.zip";
-        public override List<String> sets => new List<string> {
+        public override string Locale => "en_us";
+        public override string CoreSet => "https://dd.b.pvp.net/latest/core-en_us.zip";
+        public override List<string> Sets => new List<string> {
             "https://dd.b.pvp.net/latest/set1-en_us.zip",
             "https://dd.b.pvp.net/latest/set2-en_us.zip",
             "https://dd.b.pvp.net/latest/set3-en_us.zip",
@@ -27,9 +29,11 @@ namespace LorDeckImage
 
     public class MetadataUrlJaJp : MetadataUrl
     {
-        public override String locale => "ja_jp";
-        public override String coreSet => "https://dd.b.pvp.net/latest/core-ja_jp.zip";
-        public override List<String> sets => new List<string> {
+        public override string Locale => "ja_jp";
+
+        public override string CoreSet => "https://dd.b.pvp.net/latest/core-ja_jp.zip";
+
+        public override List<string> Sets => new List<string> {
             "https://dd.b.pvp.net/latest/set1-ja_jp.zip",
             "https://dd.b.pvp.net/latest/set2-ja_jp.zip",
             "https://dd.b.pvp.net/latest/set3-ja_jp.zip",
@@ -42,24 +46,26 @@ namespace LorDeckImage
 
     class MetadataHelper
     {
-        public static void download(MetadataUrl metadataUrl){
+        public static void Download(MetadataUrl metadataUrl)
+        {
             // TODO: metadata/ja_jp/ フォルダ化にzipファイルをダウンロード&展開する
             // TODO: 毎回ダウンロードするのは重いので、手動でアップデートしたい時だけダウンロードするようにしたい。
         }
 
-        public static void download(String locale){
-            switch(locale)
+        public static void Download(string locale)
+        {
+            switch (locale)
             {
                 case "ja_jp":
-                    MetadataHelper.download(new MetadataUrlJaJp());
+                    MetadataHelper.Download(new MetadataUrlJaJp());
                     break;
 
                 case "en_us":
-                    MetadataHelper.download(new MetadataUrlEnUs());
+                    MetadataHelper.Download(new MetadataUrlEnUs());
                     break;
 
                 default:
-                    MetadataHelper.download(new MetadataUrlEnUs());
+                    MetadataHelper.Download(new MetadataUrlEnUs());
                     break;
             }
         }

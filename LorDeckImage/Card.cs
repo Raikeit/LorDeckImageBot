@@ -4,14 +4,17 @@
 
     public class Card
     {
-        private string code;
-        public int Count;
+        private string code { get; set; }
 
-        public Card(CardCodeAndCount cardCodeAndCount)
+        public int Count { get; set; }
+
+        public string ImgPath { get; set; }
+
+        public Card(CardCodeAndCount cardCodeAndCount, MetadataUrl metadataUrl)
         {
             this.code = cardCodeAndCount.CardCode;
             this.Count = cardCodeAndCount.Count;
-            // TODO: カード画像へのリンクを持つ
+            this.ImgPath = Path.Combine(metadataUrl.CardImgDirPath, this.code + "." + metadataUrl.ImgExt);
         }
 
         // public Image getImage()

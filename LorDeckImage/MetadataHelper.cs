@@ -5,9 +5,12 @@
     using System.IO;
     using System.Runtime.CompilerServices;
     using System.IO.Compression;
+    using Microsoft.VisualBasic.FileIO;
 
     public abstract class MetadataUrl
     {
+        public string metadataDirPath => "metadata";
+
         public string CoreSetFileName => "core";
 
         public List<string> SetsFileNames => new List<string>
@@ -20,6 +23,10 @@
         public abstract string CoreSet { get; }
 
         public abstract List<string> Sets { get; }
+
+        public abstract string CardImgDirPath { get;  }
+
+        public string ImgExt => "png";
     }
 
     public class MetadataUrlEnUs : MetadataUrl
@@ -36,6 +43,8 @@
             "https://dd.b.pvp.net/latest/set6-en_us.zip",
             "https://dd.b.pvp.net/latest/set6cde-en_us.zip"
         };
+
+        public override string CardImgDirPath => Path.Combine(this.metadataDirPath, this.Locale, "cards");
     }
 
     public class MetadataUrlJaJp : MetadataUrl
@@ -54,15 +63,15 @@
             "https://dd.b.pvp.net/latest/set6-ja_jp.zip",
             "https://dd.b.pvp.net/latest/set6cde-ja_jp.zip"
         };
+
+        public override string CardImgDirPath => Path.Combine(this.metadataDirPath, this.Locale, "cards");
     }
 
     public class MetadataHelper
     {
-        private static string metadataDirPath = "metadata";
-
         public static void Download(MetadataUrl metadataUrl)
         {
-            string dirPath = Path.Combine(MetadataHelper.metadataDirPath, metadataUrl.Locale);
+            string dirPath = Path.Combine(metadataUrl.metadataDirPath, metadataUrl.Locale);
             if (!Directory.Exists(dirPath))
             {
                 new DirectoryInfo(dirPath).Create();
@@ -76,17 +85,19 @@
 
             string extractedDirPath = Path.Combine(dirPath, metadataUrl.CoreSetFileName);
             string downloadedZipPath = extractedDirPath + ".zip";
-            MetadataHelper.DownloadFile(metadataUrl.CoreSet, downloadedZipPath).Wait();
+            DownloadFile(metadataUrl.CoreSet, downloadedZipPath).Wait();
             ZipFile.ExtractToDirectory(downloadedZipPath, extractedDirPath);
             File.Delete(downloadedZipPath);
+            MergeSet(extractedDirPath, dirPath, metadataUrl.Locale);
 
             foreach (var dataSet in metadataUrl.SetsFileNames.Zip(metadataUrl.Sets))
             {
                 extractedDirPath = Path.Combine(dirPath, dataSet.First);
                 downloadedZipPath = extractedDirPath + ".zip";
-                MetadataHelper.DownloadFile(dataSet.Second, downloadedZipPath).Wait();
+                DownloadFile(dataSet.Second, downloadedZipPath).Wait();
                 ZipFile.ExtractToDirectory(downloadedZipPath, extractedDirPath);
                 File.Delete(downloadedZipPath);
+                MergeSet(extractedDirPath, dirPath, metadataUrl.Locale);
             }
 
 
@@ -94,19 +105,21 @@
 
         public static void Download(string locale)
         {
+            Download(GetMetadataUrl(locale));
+        }
+
+        public static MetadataUrl GetMetadataUrl(string locale)
+        {
             switch (locale)
             {
                 case "ja_jp":
-                    MetadataHelper.Download(new MetadataUrlJaJp());
-                    break;
+                    return new MetadataUrlJaJp();
 
                 case "en_us":
-                    MetadataHelper.Download(new MetadataUrlEnUs());
-                    break;
+                    return new MetadataUrlEnUs();
 
                 default:
-                    MetadataHelper.Download(new MetadataUrlEnUs());
-                    break;
+                    return new MetadataUrlEnUs();
             }
         }
 
@@ -123,6 +136,13 @@
             using var stream = await response.Content.ReadAsStreamAsync();
             using var outStream = File.Create(downloadPath);
             stream.CopyTo(outStream);
+        }
+
+        private static void MergeSet(string srcSetPath, string destPath, string locale)
+        {
+            // メモ：FileSystem.MoveDirectory()ってUnixで使える？
+            FileSystem.MoveDirectory(Path.Combine(srcSetPath, locale, "img"), Path.Combine(destPath, "img"), true);
+            FileSystem.MoveDirectory(Path.Combine(srcSetPath, locale, "data"), Path.Combine(destPath, "data"), true);
         }
     }
 }

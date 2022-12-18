@@ -25,4 +25,5 @@ namespace Test_LorDeckImage
             Assert.Equal("en_us", metadataEnUs.Locale);
             Assert.Equal("ja_jp", metadataJaJp.Locale);
         }
+    }
 }

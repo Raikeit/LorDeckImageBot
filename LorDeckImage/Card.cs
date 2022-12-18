@@ -1,6 +1,9 @@
 ﻿namespace LorDeckImage
 {
     using LoRDeckCodes;
+    using SixLabors.ImageSharp;
+    using SixLabors.ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.Processing;
 
     public class Card
     {
@@ -17,9 +20,15 @@
             this.ImgPath = Path.Combine(metadata.CardImgDirPath, this.code + "." + metadata.ImgExt);
         }
 
-        // public Image getImage()
-        // TODO: カード1枚画像を生成する。
-        // TealRedのデッキ画像ジェネレータのように、右上に枚数も表示したい
-        // OpenCVを使う？Linuxで動かすときに面倒なビルド＆デプロイ作業はしたくない
+        public Image<Rgba32> getImage(int width, int height)
+        {
+            Image<Rgba32> image = (Image<Rgba32>)Image.Load(this.ImgPath);
+            image.Mutate(x => x.Resize(width, height));
+
+            // TODO: カード1枚画像を生成する。
+            // TealRedのデッキ画像ジェネレータのように、右上に枚数も表示したい
+
+            return image;
+        }
     }
 }

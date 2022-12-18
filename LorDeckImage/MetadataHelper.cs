@@ -46,7 +46,7 @@
             "https://dd.b.pvp.net/latest/set6cde-en_us.zip"
         };
 
-        public override string CardImgDirPath => Path.Combine(this.metadataDirPath, this.Locale, "cards");
+        public override string CardImgDirPath => Path.Combine(this.metadataDirPath, this.Locale, "img", "cards");
     }
 
     public class MetadataJaJp : Metadata
@@ -66,7 +66,7 @@
             "https://dd.b.pvp.net/latest/set6cde-ja_jp.zip"
         };
 
-        public override string CardImgDirPath => Path.Combine(this.metadataDirPath, this.Locale, "cards");
+        public override string CardImgDirPath => Path.Combine(this.metadataDirPath, this.Locale, "img", "cards");
     }
 
     public class MetadataHelper

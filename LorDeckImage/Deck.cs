@@ -3,7 +3,7 @@ using LoRDeckCodes;
 
 namespace LorDeckImage
 {
-    class Deck
+    public class Deck
     {
         public List<Card> Cards = new List<Card>();
 

@@ -2,7 +2,7 @@
 {
     using LoRDeckCodes;
 
-    class Card
+    public class Card
     {
         private string code;
         public int Count;

@@ -56,7 +56,7 @@
         };
     }
 
-    class MetadataHelper
+    public class MetadataHelper
     {
         private static string metadataDirPath = "metadata";
 

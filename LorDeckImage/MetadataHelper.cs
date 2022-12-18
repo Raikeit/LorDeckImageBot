@@ -46,5 +46,22 @@ namespace LorDeckImage
             // TODO: metadata/ja_jp/ フォルダ化にzipファイルをダウンロード&展開する
             // TODO: 毎回ダウンロードするのは重いので、手動でアップデートしたい時だけダウンロードするようにしたい。
         }
+
+        public static void download(String locale){
+            switch(locale)
+            {
+                case "ja_jp":
+                    MetadataHelper.download(new MetadataUrlJaJp());
+                    break;
+
+                case "en_us":
+                    MetadataHelper.download(new MetadataUrlEnUs());
+                    break;
+
+                default:
+                    MetadataHelper.download(new MetadataUrlEnUs());
+                    break;
+            }
+        }
     }
 }

@@ -1,10 +1,29 @@
 ﻿namespace LorDeckImage
 {
+    using LorDeckImage.Utils;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+
+    public enum CardType
+    {
+        [StringValue("ユニット")]
+        Unit = 0,
+
+        [StringValue("チャンピオン")]
+        Champion = 1,
+
+        [StringValue("スペル")]
+        Spell = 2,
+
+        [StringValue("ランドマーク")]
+        Landmark = 3,
+
+        [StringValue("武具")]
+        Equipment = 4,
+    }
 
     public class CardDetailData
     {
@@ -76,10 +95,20 @@
         {
             // TODO: 日本語以外の言語に対応したい。暫定対応として、読み込むJsonファイルのパスを常に日本語ファイルにする。
             // 暫定対応はMetadata.csのコンストラクタある。
-            switch (cardDetailData.type)
+            CardType cardType = CardType.Unit;
+            foreach (CardType type in Enum.GetValues(typeof(CardType)))
             {
-                case "ユニット":
-                    if (cardDetailData.supertype == "チャンピオン")
+                if (cardDetailData.type == type.GetStringValue())
+                {
+                    cardType = type;
+                    break;
+                }
+            }
+
+            switch (cardType)
+            {
+                case CardType.Unit:
+                    if (cardDetailData.supertype == CardType.Champion.GetStringValue())
                     {
                         return 0;
                     }
@@ -88,13 +117,13 @@
                         return 1;
                     }
 
-                case "スペル":
+                case CardType.Spell:
                     return 2;
 
-                case "ランドマーク":
+                case CardType.Landmark:
                     return 3;
 
-                case "武具":
+                case CardType.Equipment:
                     return 4;
 
                 default:

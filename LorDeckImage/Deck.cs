@@ -1,6 +1,7 @@
 ﻿namespace LorDeckImage
 {
     using LoRDeckCodes;
+    using LorDeckImage.Utils;
     using SixLabors;
     using SixLabors.Fonts;
     using SixLabors.ImageSharp;
@@ -28,6 +29,8 @@
 
         public int CardCountPerLine { get; private set; }
 
+        // public int ;
+
         public Deck(string deckcode, Metadata metadata)
         {
             List<CardCodeAndCount> cardCodeAndCounts = LoRDeckEncoder.GetDeckFromCode(deckcode);
@@ -39,6 +42,7 @@
             }
 
             this.SortCardList();
+            this.GetFactions();
 
             // デフォルトの画像サイズを768とする
             int defaultCanvasWidth = 768;
@@ -108,6 +112,29 @@
 
             // カードの種類順にソート
             this.Cards.Sort((x, y) => CardDetailDataHelper.GetCardTypeOrder(x.Detail) - CardDetailDataHelper.GetCardTypeOrder(y.Detail));
+        }
+
+        private List<Faction> GetFactions()
+        {
+            // デッキに含まれる地域とその枚数を計算する。
+            // 面倒な実装＆アップデートで色々変わる
+            List<Card> championCards = new List<Card>();
+
+            // チャンピオンカードのみを抜き出す
+            foreach (var card in this.Cards)
+            {
+                if (card.Detail.supertype == CardType.Champion.GetStringValue())
+                {
+                    championCards.Add(card);
+                }
+            }
+
+            foreach (var card in championCards)
+            {
+                // card.Detail.regionRefs
+            }
+
+            return new List<Faction>();
         }
     }
 }

@@ -64,7 +64,7 @@
 
             var context = new CommandContext(this.client, message);
 
-            // TODO: この機能を使って、発言の先頭が/ideck かどうかを判定する。
+            // この機能を使って、発言の先頭が/ideck かどうかを判定する。
             string[] commandContext = message.Content.Split(" ");
 
             if (commandContext.Length < 2)
@@ -74,7 +74,7 @@
 
             if (commandContext[0] == "/ideck")
             {
-                // TODO: デッキコードを取得→LoRDeckImageを使用してデッキ画像を作成する。
+                // デッキコードを取得→LoRDeckImageを使用してデッキ画像を作成する。
                 // 作成した画像をチャットに投稿する。
                 string deckcode = commandContext[1];
                 Metadata metadata = MetadataHelper.GetMetadataUrl("ja_jp");

@@ -1,10 +1,10 @@
 ﻿namespace LorDeckImage
 {
-    using System;
     using LoRDeckCodes;
     using SixLabors.ImageSharp;
     using SixLabors.ImageSharp.PixelFormats;
     using SixLabors.ImageSharp.Processing;
+    using System;
 
     public class Deck
     {
@@ -39,7 +39,7 @@
             this.SetCardCanvasSize(defaultCanvasWidth);
         }
 
-        public Image<Rgba32> getImage()
+        public Image<Rgba32> GetImage()
         {
             Image<Rgba32> canvas = new Image<Rgba32>(this.CanvasWidth, this.CanvasHeight);
             canvas.SaveAsPng("canvas.png");
@@ -62,6 +62,12 @@
             }
 
             return canvas;
+        }
+
+        public void SaveImageAsPng(string path)
+        {
+            Image<Rgba32> deckImage = this.GetImage();
+            deckImage.SaveAsPng(path);
         }
 
         public void SetCardCanvasSize(int canvasWidth)

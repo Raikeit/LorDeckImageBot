@@ -1,7 +1,11 @@
 ﻿namespace LorDeckImage
 {
     using LoRDeckCodes;
+    using SixLabors;
+    using SixLabors.Fonts;
     using SixLabors.ImageSharp;
+    using SixLabors.ImageSharp.Drawing;
+    using SixLabors.ImageSharp.Drawing.Processing;
     using SixLabors.ImageSharp.PixelFormats;
     using SixLabors.ImageSharp.Processing;
     using System;
@@ -39,12 +43,15 @@
             // デフォルトの画像サイズを768とする
             int defaultCanvasWidth = 768;
             this.SetCardCanvasSize(defaultCanvasWidth);
+
+            // カード上に表示するアイコンサイズをCanvasに合わせて変更
+            MyIcons.ResizeCardCountIcons(this.CardWidth / 4);
         }
 
         public Image<Rgba32> GetImage()
         {
             Image<Rgba32> canvas = new Image<Rgba32>(this.CanvasWidth, this.CanvasHeight);
-            canvas.SaveAsPng("canvas.png");
+            canvas.Mutate(x => x.BackgroundColor(Color.Black));
 
             for (int i = 0; i < this.Cards.Count(); i++)
             {
@@ -53,11 +60,13 @@
                 {
                     // TODO: デッキ画像を生成する。
                     // TealRedのデッキ画像ジェネレータのように、クラスごとの枚数やマナカーブも表示したい
-                    canvas.Mutate(x => x.DrawImage(
-                        cardImage,
-                        new Point(this.CardWidth * (i % this.CardCountPerLine), this.CardHeight * (i / this.CardCountPerLine)),
-                        1.0f)
-                    );
+                    canvas.Mutate(x =>
+                    {
+                        x.DrawImage(
+                            cardImage,
+                            new Point(this.CardWidth * (i % this.CardCountPerLine), this.CardHeight * (i / this.CardCountPerLine)),
+                            1.0f);
+                    });
                 }
             }
 

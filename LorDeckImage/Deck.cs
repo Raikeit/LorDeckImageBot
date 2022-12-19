@@ -34,6 +34,8 @@
                 this.Cards.Add(new Card(cardCodeAndCount, metadata));
             }
 
+            this.SortCardList();
+
             // デフォルトの画像サイズを768とする
             int defaultCanvasWidth = 768;
             this.SetCardCanvasSize(defaultCanvasWidth);
@@ -49,8 +51,6 @@
                 Card card = this.Cards[i];
                 using (Image<Rgba32> cardImage = card.getImage(this.CardWidth, this.CardHeight))
                 {
-                    // TODO: カードをソートする必要がある
-
                     // TODO: デッキ画像を生成する。
                     // TealRedのデッキ画像ジェネレータのように、クラスごとの枚数やマナカーブも表示したい
                     canvas.Mutate(x => x.DrawImage(
@@ -90,6 +90,15 @@
             this.CardHeight = (int)((double)this.CardWidth / CardWidthRatio * CardHeightRatio);
             this.CanvasWidth = canvasWidth;
             this.CanvasHeight = this.CardHeight * lineCount;
+        }
+
+        private void SortCardList()
+        {
+            // コスト順にソート
+            this.Cards.Sort((x, y) => x.Detail.cost - y.Detail.cost);
+
+            // カードの種類順にソート
+            this.Cards.Sort((x, y) => CardDetailDataHelper.GetCardTypeOrder(x.Detail) - CardDetailDataHelper.GetCardTypeOrder(y.Detail));
         }
     }
 }

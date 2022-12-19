@@ -69,4 +69,37 @@
 
         public string fullAbsolutePath { get; set; }
     }
+
+    public class CardDetailDataHelper
+    {
+        public static int GetCardTypeOrder(CardDetailData cardDetailData)
+        {
+            // TODO: 日本語以外の言語に対応したい。暫定対応として、読み込むJsonファイルのパスを常に日本語ファイルにする。
+            // 暫定対応はMetadata.csのコンストラクタある。
+            switch (cardDetailData.type)
+            {
+                case "ユニット":
+                    if (cardDetailData.supertype == "チャンピオン")
+                    {
+                        return 0;
+                    }
+                    else
+                    {
+                        return 1;
+                    }
+
+                case "スペル":
+                    return 2;
+
+                case "ランドマーク":
+                    return 3;
+
+                case "武具":
+                    return 4;
+
+                default:
+                    return 5;
+            }
+        }
+    }
 }

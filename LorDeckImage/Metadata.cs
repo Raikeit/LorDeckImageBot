@@ -35,7 +35,10 @@
 
             foreach (string setName in this.SetsFileNames)
             {
-                string setPath = Path.Combine(this.metadataDirPath, this.Locale, "data", $"{setName}-{this.Locale}.json");
+                // TODO: ソートの際の日本語以外の言語に対応したい。
+                // 暫定対応として、読み込むJsonファイルのパスを常に日本語ファイルにする。
+                // string setPath = Path.Combine(this.metadataDirPath, this.Locale, "data", $"{setName}-{this.Locale}.json");
+                string setPath = Path.Combine(this.metadataDirPath, this.Locale, "data", $"{setName}-ja_jp.json");
 
                 string jsonString = File.ReadAllText(setPath);
                 List<CardDetailData>? datas = JsonSerializer.Deserialize<List<CardDetailData>>(jsonString);

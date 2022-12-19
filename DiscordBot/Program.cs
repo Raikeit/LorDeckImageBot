@@ -74,8 +74,6 @@
 
             if (commandContext[0] == "/ideck")
             {
-                await message.Channel.SendMessageAsync("Hello!");
-
                 // TODO: デッキコードを取得→LoRDeckImageを使用してデッキ画像を作成する。
                 // 作成した画像をチャットに投稿する。
                 string deckcode = commandContext[1];

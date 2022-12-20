@@ -11,7 +11,7 @@
     {
         public static void Download(Metadata metadata)
         {
-            string dirPath = Path.Combine(metadata.metadataDirPath, metadata.Locale);
+            string dirPath = Path.Combine(Metadata.MetadataDirPath, metadata.Locale);
             if (!Directory.Exists(dirPath))
             {
                 new DirectoryInfo(dirPath).Create();

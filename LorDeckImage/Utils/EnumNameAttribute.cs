@@ -43,7 +43,7 @@ namespace LorDeckImage.Utils
             // Get fieldinfo for this type
             System.Reflection.FieldInfo fieldInfo = type.GetField(value.ToString());
 
-            //範囲外の値チェック
+            // 範囲外の値チェック
             if (fieldInfo == null) return null;
 
             StringValueAttribute[] attribs = fieldInfo.GetCustomAttributes(typeof(StringValueAttribute), false) as StringValueAttribute[];

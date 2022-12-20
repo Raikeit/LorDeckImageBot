@@ -8,7 +8,7 @@
 
     public abstract class Metadata
     {
-        public string metadataDirPath => "metadata";
+        public static string MetadataDirPath => "metadata";
 
         public string CoreSetFileName => "core";
 
@@ -37,8 +37,8 @@
             {
                 // TODO: ソートの際の日本語以外の言語に対応したい。
                 // 暫定対応として、読み込むJsonファイルのパスを常に日本語ファイルにする。
-                // string setPath = Path.Combine(this.metadataDirPath, this.Locale, "data", $"{setName}-{this.Locale}.json");
-                string setPath = Path.Combine(this.metadataDirPath, this.Locale, "data", $"{setName}-ja_jp.json");
+                // string setPath = Path.Combine(metadataDirPath, this.Locale, "data", $"{setName}-{this.Locale}.json");
+                string setPath = Path.Combine(MetadataDirPath, this.Locale, "data", $"{setName}-ja_jp.json");
 
                 string jsonString = File.ReadAllText(setPath);
                 List<CardDetailData>? datas = JsonSerializer.Deserialize<List<CardDetailData>>(jsonString);
@@ -73,7 +73,7 @@
             "https://dd.b.pvp.net/latest/set6cde-en_us.zip"
         };
 
-        public override string CardImgDirPath => Path.Combine(this.metadataDirPath, this.Locale, "img", "cards");
+        public override string CardImgDirPath => Path.Combine(MetadataDirPath, this.Locale, "img", "cards");
 
 
     }
@@ -95,6 +95,6 @@
             "https://dd.b.pvp.net/latest/set6cde-ja_jp.zip"
         };
 
-        public override string CardImgDirPath => Path.Combine(this.metadataDirPath, this.Locale, "img", "cards");
+        public override string CardImgDirPath => Path.Combine(MetadataDirPath, this.Locale, "img", "cards");
     }
 }

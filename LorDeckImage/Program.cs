@@ -3,11 +3,11 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
 // See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+// Console.WriteLine("Hello, World!");
 // MetadataHelper.Download("ja_jp");
 // MetadataHelper.Download("abc");
 
-string deckcode = "CEBQCAIBEIBACBI6GEDQMBIMBUHBAHBAEYBQCAIFFAAQIAIMAIAQCAZKAIAQCBIZAECACCQ";
+string deckcode = "CQDACAIEBAAQKCIJAICQVJQBU4AQEBQKDITAGBQJAQDB2BADBEESGXWWAEAACAIFBEBA";
 
 Metadata metadata = MetadataHelper.GetMetadataUrl("ja_jp");
 Deck deck = new Deck(deckcode, metadata);

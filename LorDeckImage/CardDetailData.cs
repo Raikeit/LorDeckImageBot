@@ -9,11 +9,13 @@
 
     public enum CardType
     {
-        [StringValue("ユニット")]
-        Unit = 0,
-
+        // TODO: 日本語以外の言語に対応したい。暫定対応として、読み込むJsonファイルのパスを常に日本語ファイルにする。
+        // 暫定対応はMetadata.csのコンストラクタある。
         [StringValue("チャンピオン")]
-        Champion = 1,
+        Champion = 0,
+
+        [StringValue("ユニット")]
+        Unit = 1,
 
         [StringValue("スペル")]
         Spell = 2,
@@ -93,29 +95,15 @@
     {
         public static int GetCardTypeOrder(CardDetailData cardDetailData)
         {
-            // TODO: 日本語以外の言語に対応したい。暫定対応として、読み込むJsonファイルのパスを常に日本語ファイルにする。
-            // 暫定対応はMetadata.csのコンストラクタある。
-            CardType cardType = CardType.Unit;
-            foreach (CardType type in Enum.GetValues(typeof(CardType)))
-            {
-                if (cardDetailData.type == type.GetStringValue())
-                {
-                    cardType = type;
-                    break;
-                }
-            }
+            CardType cardType = ConverFromString(cardDetailData.type, cardDetailData.supertype);
 
             switch (cardType)
             {
+                case CardType.Champion:
+                    return 0;
+
                 case CardType.Unit:
-                    if (cardDetailData.supertype == CardType.Champion.GetStringValue())
-                    {
-                        return 0;
-                    }
-                    else
-                    {
-                        return 1;
-                    }
+                    return 1;
 
                 case CardType.Spell:
                     return 2;
@@ -129,6 +117,24 @@
                 default:
                     return 5;
             }
+        }
+
+        public static CardType ConverFromString(string cardTypeStr, string supertype)
+        {
+            foreach (CardType type in Enum.GetValues(typeof(CardType)))
+            {
+                if (cardTypeStr == type.GetStringValue())
+                {
+                    if (type == CardType.Unit && supertype == CardType.Champion.GetStringValue())
+                    {
+                        return CardType.Champion;
+                    }
+
+                    return type;
+                }
+            }
+
+            throw new Exception("不明なカードタイプのカードがあります。 :" + cardTypeStr + ", " + supertype);
         }
     }
 }

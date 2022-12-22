@@ -40,3 +40,10 @@ https://cod-sushi.com/discord-py-token/
 ### Botの実行
 
 `LorDeckImage.exe`を実行してください。
+
+### Discordチャットでの使用方法
+
+`/ideck CICQCAQDAMAQKBQBAIDAMFI6AMBAMFQ2HICQCAYCBQHSKKABAIBAMJRNAA`
+
+上記のように`/ideck`の後ろに半角スペースとデッキコードをチャットで発言します。
+Botから画像が返信されたら成功です。

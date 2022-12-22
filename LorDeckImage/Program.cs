@@ -9,7 +9,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 string deckcode = "CQDACAIEBAAQKCIJAICQVJQBU4AQEBQKDITAGBQJAQDB2BADBEESGXWWAEAACAIFBEBA";
 
-Metadata metadata = MetadataHelper.GetMetadataUrl("ja_jp");
+Metadata metadata = new Metadata("ja_jp");
 Deck deck = new Deck(deckcode, metadata);
 Card card = deck.Cards.First();
 

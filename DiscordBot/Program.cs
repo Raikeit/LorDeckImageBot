@@ -5,10 +5,15 @@
     using Discord.WebSocket;
     using Microsoft.Extensions.DependencyInjection;
     using System.Reflection;
+    using System.Configuration;
     using LorDeckImage;
+    using DownloadMetadata;
 
     class Program
     {
+        public static string? Token;
+        public static string? Locale;
+
         private DiscordSocketClient? client;
         public static CommandService? Commands;
         public static IServiceProvider? Services;
@@ -16,7 +21,18 @@
         public static string TempDir => "temp";
 
         static void Main(string[] args)
-            => new Program().MainAsync().GetAwaiter().GetResult();
+        {
+            Dictionary<string, string> SetConfig = new Dictionary<string, string>();
+            foreach (string key in ConfigurationManager.AppSettings.AllKeys)
+            {
+                SetConfig.Add(key, ConfigurationManager.AppSettings[key]);
+            }
+
+            Token = SetConfig["Token"];
+            Locale = SetConfig["Locale"];
+
+            new Program().MainAsync().GetAwaiter().GetResult();
+        }
 
         public async Task MainAsync()
         {
@@ -35,11 +51,8 @@
             Services = new ServiceCollection().BuildServiceProvider();
             this.client.MessageReceived += CommandRecieved;
 
-            // TODO: Discord BOTのTokenを設定ファイルから読み込むようにする。
-            // 設定ファイルはGitにアップロードしないこと
-            string token = "hogehogehoge";
             await Commands.AddModulesAsync(Assembly.GetEntryAssembly(), Services);
-            await this.client.LoginAsync(TokenType.Bot, token);
+            await this.client.LoginAsync(TokenType.Bot, Token);
             await this.client.StartAsync();
 
             await Task.Delay(-1);
@@ -52,9 +65,6 @@
             {
                 return;
             }
-
-            // デバッグ用メッセージを出力
-            Console.WriteLine("{0} {1}:{2}", message.Channel.Name, message.Author.Username, message);
 
             // 発言者がBotの場合無視する
             if (message.Author.IsBot)
@@ -77,7 +87,7 @@
                 // デッキコードを取得→LoRDeckImageを使用してデッキ画像を作成する。
                 // 作成した画像をチャットに投稿する。
                 string deckcode = commandContext[1];
-                Metadata metadata = MetadataHelper.GetMetadataUrl("ja_jp");
+                Metadata metadata = new Metadata(Locale);
                 Deck deck = new Deck(deckcode, metadata);
 
                 if (deck != null)

@@ -13,6 +13,7 @@
     using System;
     using System.Collections.Generic;
     using System.Runtime.ConstrainedExecution;
+    using static System.Net.Mime.MediaTypeNames;
 
     public class Deck
     {
@@ -37,6 +38,8 @@
         public int CardCountPerLine { get; private set; }
 
         public DeckFactions Factions { get; private set; }
+
+        public static int MaxContainFactions => 2;
 
         public Deck(string deckcode, Metadata metadata)
         {
@@ -67,6 +70,16 @@
             Image<Rgba32> canvas = new Image<Rgba32>(this.CanvasWidth, this.CanvasHeight);
             canvas.Mutate(x => x.BackgroundColor(Color.Black));
 
+            const string FontName = "Arial";
+            FontFamily fontFamily;
+            if (!SystemFonts.TryGet(FontName, out fontFamily))
+            {
+                throw new Exception($"Couldn't find font {FontName}");
+            }
+
+            float cardCountFontSize = (float)(MyIcons.BaseCircleSize * 0.7);
+            Font cardCountFont = fontFamily.CreateFont(cardCountFontSize, FontStyle.Regular);
+
             // ヘッダーの描画
             // 地域アイコン
             for (int i = 0; i < this.Factions.Factions.Count(); i++)
@@ -83,10 +96,17 @@
                             (MyIcons.RegionIconsSize * (i + 1)) - MyIcons.BaseCircleSize,
                             MyIcons.RegionIconsSize - MyIcons.BaseCircleSize),
                         1.0f);
+                    x.DrawText(
+                            string.Format("{0, 2}", this.Factions.Factions[i].Count),
+                            cardCountFont,
+                            new Color(new Rgba32((byte)0, (byte)0, (byte)0, (byte)200)),
+                            new PointF(
+                                (MyIcons.RegionIconsSize * (i + 1)) - MyIcons.BaseCircleSize + MyIcons.BaseCircleSize * 0.1f,
+                                MyIcons.RegionIconsSize - MyIcons.BaseCircleSize + MyIcons.BaseCircleSize * 0.1f));
                 });
             }
 
-            // カートタイプアイコン
+            // カードタイプアイコン
             Dictionary<CardType, int> countCardType = this.GetCountCardType();
             {
                 int i = 0;
@@ -97,15 +117,22 @@
                         x.DrawImage(
                             MyIcons.CardTypeIcons[cardType],
                             new Point(
-                                (MyIcons.RegionIconsSize * this.Factions.Factions.Count()) + (MyIcons.CardTypeIconsSize * i),
+                                (MyIcons.RegionIconsSize * MaxContainFactions) + (MyIcons.CardTypeIconsSize * i),
                                 (this.CanvasHeaderHeight - MyIcons.CardTypeIconsSize) / 2),
                             1.0f);
                         x.DrawImage(
                             MyIcons.BaseCircle,
                             new Point(
-                                (MyIcons.RegionIconsSize * this.Factions.Factions.Count()) + (MyIcons.CardTypeIconsSize * (i + 1)) - MyIcons.BaseCircleSize,
+                                (MyIcons.RegionIconsSize * MaxContainFactions) + (MyIcons.CardTypeIconsSize * (i + 1)) - MyIcons.BaseCircleSize,
                                 ((this.CanvasHeaderHeight - MyIcons.CardTypeIconsSize) / 2) + MyIcons.CardTypeIconsSize - MyIcons.BaseCircleSize),
                             1.0f);
+                        x.DrawText(
+                            string.Format("{0, 2}", countCardType[cardType]),
+                            cardCountFont,
+                            new Color(new Rgba32((byte)0, (byte)0, (byte)0, (byte)200)),
+                            new PointF(
+                                (MyIcons.RegionIconsSize * MaxContainFactions) + (MyIcons.CardTypeIconsSize * (i + 1)) - MyIcons.BaseCircleSize + MyIcons.BaseCircleSize * 0.1f,
+                                ((this.CanvasHeaderHeight - MyIcons.CardTypeIconsSize) / 2) + MyIcons.CardTypeIconsSize - MyIcons.BaseCircleSize + MyIcons.BaseCircleSize * 0.1f));
                     });
 
                     i++;
@@ -114,37 +141,70 @@
 
             // マナカーブ
             List<int> manaCurve = this.GetManaCurve();
-            int startPositionX = (MyIcons.RegionIconsSize * this.Factions.Factions.Count()) + (MyIcons.CardTypeIconsSize * Enum.GetNames(typeof(CardType)).Length) + 10;
-            int startPositionY = this.CanvasHeaderHeight / 7;
+            int maxNumOfManaCards = manaCurve.Max<int>();
+
+            int startPositionX = (MyIcons.RegionIconsSize * MaxContainFactions) + (MyIcons.CardTypeIconsSize * Enum.GetNames(typeof(CardType)).Length) + 10;
+            int topPositionY = this.CanvasHeaderHeight / 7;
             int numGraphs = DisplayMaxManaCost + 1;
             int spaceOfGraph = (int)((this.CanvasWidth - startPositionX) / numGraphs);
             int widthOfGraph = (int)((this.CanvasWidth - startPositionX) / numGraphs * 0.9);
             int heightOfGraph = this.CanvasHeaderHeight / 7 * 5;
+            int bottomPositionY = topPositionY + heightOfGraph;
+
+            float manaCurveFontSize = widthOfGraph * 0.7f;
+            Font manaCurveFont = fontFamily.CreateFont(manaCurveFontSize, FontStyle.Regular);
 
             for (int i = 0; i < numGraphs; i++)
             {
+                int numOfCards = manaCurve[i];
+                double barLengthRatio = (double)numOfCards / (double)maxNumOfManaCards;
+
                 canvas.Mutate(x =>
                 {
-                    x.DrawPolygon(
-                        new Pen(new Color(new Rgba32((byte)142, (byte)113, (byte)208, (byte)128)), 1.0f),
-                        new List<PointF>()
-                        {
-                             new PointF(startPositionX + (i * spaceOfGraph), startPositionY),
-                             new PointF(startPositionX + (i * spaceOfGraph) + widthOfGraph, startPositionY),
-                             new PointF(startPositionX + (i * spaceOfGraph) + widthOfGraph, startPositionY + heightOfGraph),
-                             new PointF(startPositionX + (i * spaceOfGraph), startPositionY + heightOfGraph),
-                        }.ToArray()
-                    );
                     x.FillPolygon(
                         new Color(new Rgba32((byte)39, (byte)18, (byte)125, (byte)128)),
                         new List<PointF>()
                         {
-                             new PointF(startPositionX + (i * spaceOfGraph), startPositionY),
-                             new PointF(startPositionX + (i * spaceOfGraph) + widthOfGraph, startPositionY),
-                             new PointF(startPositionX + (i * spaceOfGraph) + widthOfGraph, startPositionY + heightOfGraph),
-                             new PointF(startPositionX + (i * spaceOfGraph), startPositionY + heightOfGraph),
+                             new PointF(startPositionX + (i * spaceOfGraph), topPositionY),
+                             new PointF(startPositionX + (i * spaceOfGraph) + widthOfGraph, topPositionY),
+                             new PointF(startPositionX + (i * spaceOfGraph) + widthOfGraph, bottomPositionY),
+                             new PointF(startPositionX + (i * spaceOfGraph), bottomPositionY),
                         }.ToArray()
                     );
+
+                    x.FillPolygon(
+                        new Color(new Rgba32((byte)100, (byte)149, (byte)237, (byte)200)),
+                        new List<PointF>()
+                        {
+                             new PointF(startPositionX + (i * spaceOfGraph), (int)(bottomPositionY - ((bottomPositionY - topPositionY) * barLengthRatio))),
+                             new PointF(startPositionX + (i * spaceOfGraph) + widthOfGraph, (int)(bottomPositionY - ((bottomPositionY - topPositionY) * barLengthRatio))),
+                             new PointF(startPositionX + (i * spaceOfGraph) + widthOfGraph, bottomPositionY),
+                             new PointF(startPositionX + (i * spaceOfGraph), bottomPositionY),
+                        }.ToArray()
+                    );
+
+                    x.DrawPolygon(
+                        new Pen(new Color(new Rgba32((byte)142, (byte)113, (byte)208, (byte)128)), 1.0f),
+                        new List<PointF>()
+                        {
+                             new PointF(startPositionX + (i * spaceOfGraph), topPositionY),
+                             new PointF(startPositionX + (i * spaceOfGraph) + widthOfGraph, topPositionY),
+                             new PointF(startPositionX + (i * spaceOfGraph) + widthOfGraph, bottomPositionY),
+                             new PointF(startPositionX + (i * spaceOfGraph), bottomPositionY),
+                        }.ToArray()
+                    );
+
+                    x.DrawText(
+                            string.Format("{0, 2}", numOfCards),
+                            manaCurveFont,
+                            new Color(new Rgba32((byte)255, (byte)255, (byte)255, (byte)200)),
+                            new PointF(startPositionX + (i * spaceOfGraph), 0.0f));
+
+                    x.DrawText(
+                            string.Format("{0, 2}", i < (numGraphs - 1) ? i.ToString() : i.ToString() + "+"),
+                            manaCurveFont,
+                            new Color(new Rgba32((byte)255, (byte)255, (byte)255, (byte)200)),
+                            new PointF(startPositionX + (i * spaceOfGraph), bottomPositionY));
                 });
             }
 
@@ -194,7 +254,7 @@
             this.CardWidth = canvasWidth / this.CardCountPerLine;
             this.CardHeight = (int)((double)this.CardWidth / CardWidthRatio * CardHeightRatio);
             this.CanvasWidth = canvasWidth;
-            this.CanvasHeaderHeight = this.CanvasWidth / 7;
+            this.CanvasHeaderHeight = this.CanvasWidth / 8;
             this.CanvasHeight = this.CanvasHeaderHeight + (this.CardHeight * lineCount);
         }
 

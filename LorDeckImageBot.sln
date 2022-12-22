@@ -12,8 +12,13 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoRDeckCodes", "3rdparty\LoRDeckCodes\LoRDeckCodes\LoRDeckCodes.csproj", "{43E9A3E5-740F-444B-82DF-5C21A1390BBE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscordBot", "DiscordBot\DiscordBot.csproj", "{48F7695D-15ED-4AF0-B2D8-458D5536A662}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2ECDF963-02F3-45AA-BA27-B25484D6422E} = {2ECDF963-02F3-45AA-BA27-B25484D6422E}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test_LorDeckImage", "Test_LorDeckImage\Test_LorDeckImage.csproj", "{B9C28743-88DC-432D-ADA3-B24C6DD63600}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test_LorDeckImage", "Test_LorDeckImage\Test_LorDeckImage.csproj", "{B9C28743-88DC-432D-ADA3-B24C6DD63600}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DownloadMetadata", "DownloadMetadata\DownloadMetadata.csproj", "{2ECDF963-02F3-45AA-BA27-B25484D6422E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +42,10 @@ Global
 		{B9C28743-88DC-432D-ADA3-B24C6DD63600}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9C28743-88DC-432D-ADA3-B24C6DD63600}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9C28743-88DC-432D-ADA3-B24C6DD63600}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2ECDF963-02F3-45AA-BA27-B25484D6422E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ECDF963-02F3-45AA-BA27-B25484D6422E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ECDF963-02F3-45AA-BA27-B25484D6422E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2ECDF963-02F3-45AA-BA27-B25484D6422E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

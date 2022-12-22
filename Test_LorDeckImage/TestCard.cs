@@ -9,7 +9,7 @@
         {
             string deckcode = "CEBQCAIBEIBACBI6GEDQMBIMBUHBAHBAEYBQCAIFFAAQIAIMAIAQCAZKAIAQCBIZAECACCQ";
 
-            Metadata metadata = MetadataHelper.GetMetadataUrl("ja_jp");
+            Metadata metadata = new Metadata("ja_jp");
             Deck deck = new Deck(deckcode, metadata);
             Card card = deck.Cards.First();
 

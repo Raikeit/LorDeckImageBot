@@ -9,9 +9,31 @@
 
     public class MetadataHelper
     {
-        public static void Download(Metadata metadata)
+        public string Locale { get; private set; }
+
+        public string CoreSet { get; private set; }
+
+        public List<string> Sets { get; private set; }
+
+        public MetadataHelper(string locale)
         {
-            string dirPath = Path.Combine(Metadata.MetadataDirPath, metadata.Locale);
+            this.Locale = locale;
+            this.CoreSet = string.Format("https://dd.b.pvp.net/latest/core-{0}.zip", locale);
+            this.Sets = new List<string>
+            {
+                string.Format("https://dd.b.pvp.net/latest/set1-{0}.zip", locale),
+                string.Format("https://dd.b.pvp.net/latest/set2-{0}.zip", locale),
+                string.Format("https://dd.b.pvp.net/latest/set3-{0}.zip", locale),
+                string.Format("https://dd.b.pvp.net/latest/set4-{0}.zip", locale),
+                string.Format("https://dd.b.pvp.net/latest/set5-{0}.zip", locale),
+                string.Format("https://dd.b.pvp.net/latest/set6-{0}.zip", locale),
+                string.Format("https://dd.b.pvp.net/latest/set6cde-{0}.zip", locale)
+            };
+        }
+
+        public void Download()
+        {
+            string dirPath = Path.Combine(Metadata.MetadataDirPath, this.Locale);
             if (!Directory.Exists(dirPath))
             {
                 new DirectoryInfo(dirPath).Create();
@@ -23,41 +45,25 @@
                 di.Create();
             }
 
-            string extractedDirPath = Path.Combine(dirPath, metadata.CoreSetFileName);
+            string extractedDirPath = Path.Combine(dirPath, Metadata.CoreSetFileName);
             string downloadedZipPath = extractedDirPath + ".zip";
-            DownloadFile(metadata.CoreSet, downloadedZipPath).Wait();
+            Console.WriteLine(string.Format("Downloading... {0}", downloadedZipPath));
+            DownloadFile(this.CoreSet, downloadedZipPath).Wait();
+            Console.WriteLine(string.Format("Extracting... {0}", downloadedZipPath));
             ZipFile.ExtractToDirectory(downloadedZipPath, extractedDirPath);
             File.Delete(downloadedZipPath);
-            MergeSet(extractedDirPath, dirPath, metadata.Locale);
+            MergeSet(extractedDirPath, dirPath, this.Locale);
 
-            foreach (var dataSet in metadata.SetsFileNames.Zip(metadata.Sets))
+            foreach (var dataSet in Metadata.SetsFileNames.Zip(this.Sets))
             {
                 extractedDirPath = Path.Combine(dirPath, dataSet.First);
                 downloadedZipPath = extractedDirPath + ".zip";
+                Console.WriteLine(string.Format("Downloading... {0}", downloadedZipPath));
                 DownloadFile(dataSet.Second, downloadedZipPath).Wait();
+                Console.WriteLine(string.Format("Extracting... {0}", downloadedZipPath));
                 ZipFile.ExtractToDirectory(downloadedZipPath, extractedDirPath);
                 File.Delete(downloadedZipPath);
-                MergeSet(extractedDirPath, dirPath, metadata.Locale);
-            }
-        }
-
-        public static void Download(string locale)
-        {
-            Download(GetMetadataUrl(locale));
-        }
-
-        public static Metadata GetMetadataUrl(string locale)
-        {
-            switch (locale)
-            {
-                case "ja_jp":
-                    return new MetadataJaJp();
-
-                case "en_us":
-                    return new MetadataEnUs();
-
-                default:
-                    return new MetadataEnUs();
+                MergeSet(extractedDirPath, dirPath, this.Locale);
             }
         }
 

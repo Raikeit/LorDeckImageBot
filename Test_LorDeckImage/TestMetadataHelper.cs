@@ -7,7 +7,8 @@ namespace Test_LorDeckImage
         [Fact]
         public void TestDownloadJaJp()
         {
-            MetadataHelper.Download("ja_jp");
+            MetadataHelper metadataHelper = new MetadataHelper("ja_jp");
+            metadataHelper.Download();
 
             string corePath = Path.Combine("metadata", "ja_jp", "core");
             string set6cdePath = Path.Combine("metadata", "ja_jp", "set6cde");
@@ -19,8 +20,8 @@ namespace Test_LorDeckImage
         [Fact]
         public void TestMetadataFactory()
         {
-            Metadata metadataEnUs = MetadataHelper.GetMetadataUrl("en_us");
-            Metadata metadataJaJp = MetadataHelper.GetMetadataUrl("ja_jp");
+            Metadata metadataEnUs = new Metadata("en_us");
+            Metadata metadataJaJp = new Metadata("ja_jp");
 
             Assert.Equal("en_us", metadataEnUs.Locale);
             Assert.Equal("ja_jp", metadataJaJp.Locale);

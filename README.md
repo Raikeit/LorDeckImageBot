@@ -47,3 +47,5 @@ https://cod-sushi.com/discord-py-token/
 
 上記のように`/ideck`の後ろに半角スペースとデッキコードをチャットで発言します。
 Botから画像が返信されたら成功です。
+
+![bot-chat-replay](https://pbs.twimg.com/media/FkmcW-PUEAAgAGF?format=png&name=small)

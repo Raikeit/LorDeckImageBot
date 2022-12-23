@@ -45,7 +45,7 @@ https://cod-sushi.com/discord-py-token/
 
 ### 7. Botの実行
 
-`LorDeckImage.exe`を実行してください。
+`DiscordBot.exe`を実行してください。
 
 ### 8. Discordチャットでの使用方法
 

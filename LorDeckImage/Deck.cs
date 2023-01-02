@@ -26,6 +26,8 @@
 
         public List<Card> Cards { get; private set; }
 
+        public IEnumerable<Card> OrderedCards { get; private set; }
+
         public int CardWidth { get; private set; }
 
         public int CardHeight { get; private set; }
@@ -219,9 +221,9 @@
             }
 
             // カードリストの描画
-            for (int i = 0; i < this.Cards.Count(); i++)
+            for (int i = 0; i < this.OrderedCards.Count(); i++)
             {
-                Card card = this.Cards[i];
+                Card card = this.OrderedCards.ToArray()[i];
                 using (Image<Rgba32> cardImage = card.getImage(this.CardWidth, this.CardHeight))
                 {
                     canvas.Mutate(x =>
@@ -281,13 +283,11 @@
 
         private void SortCardList()
         {
-            // コスト順にソート
-            this.Cards.Sort((x, y) => x.Detail.cost - y.Detail.cost);
-
-            // TODO: ソート時に元の順番を維持するようにする。
-            // LINQを使う？
-            // カードの種類順にソート
-            this.Cards.Sort((x, y) => CardDetailDataHelper.GetCardTypeOrder(x.Detail) - CardDetailDataHelper.GetCardTypeOrder(y.Detail));
+            this.OrderedCards = this.Cards
+                // コスト順にソート
+                .OrderBy(value => value.Detail.cost)
+                // カードの種類順にソート
+                .OrderBy(value => CardDetailDataHelper.GetCardTypeOrder(value.Detail));
         }
 
         private DeckFactions GetFactions()

@@ -7,7 +7,7 @@ using SixLabors.ImageSharp.PixelFormats;
 // MetadataHelper.Download("ja_jp");
 // MetadataHelper.Download("abc");
 
-string deckcode = "CQDACAIEBAAQKCIJAICQVJQBU4AQEBQKDITAGBQJAQDB2BADBEESGXWWAEAACAIFBEBA";
+string deckcode = "CQBACAIEEQBAMBAVFABQCBQKC4AQMBBAAMCQUMNGAHKQCBQBAMCAWAIEAQDQEBQKE4UAIAIEAENSCNAGAUFAIKBYL22ADRQBA4DAIBQJBYJBMIRL";
 
 Metadata metadata = new Metadata("ja_jp");
 Deck deck = new Deck(deckcode, metadata);

@@ -48,7 +48,7 @@
             string extractedDirPath = Path.Combine(dirPath, Metadata.CoreSetFileName);
             string downloadedZipPath = extractedDirPath + ".zip";
             Console.WriteLine(string.Format("Downloading... {0}", downloadedZipPath));
-            DownloadFile(this.CoreSet, downloadedZipPath).Wait();
+            DownloadFile(this.CoreSet, downloadedZipPath).Wait(-1);
             Console.WriteLine(string.Format("Extracting... {0}", downloadedZipPath));
             ZipFile.ExtractToDirectory(downloadedZipPath, extractedDirPath);
             File.Delete(downloadedZipPath);
@@ -59,7 +59,7 @@
                 extractedDirPath = Path.Combine(dirPath, dataSet.First);
                 downloadedZipPath = extractedDirPath + ".zip";
                 Console.WriteLine(string.Format("Downloading... {0}", downloadedZipPath));
-                DownloadFile(dataSet.Second, downloadedZipPath).Wait();
+                DownloadFile(dataSet.Second, downloadedZipPath).Wait(-1);
                 Console.WriteLine(string.Format("Extracting... {0}", downloadedZipPath));
                 ZipFile.ExtractToDirectory(downloadedZipPath, extractedDirPath);
                 File.Delete(downloadedZipPath);

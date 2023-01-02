@@ -11,6 +11,7 @@
     using SixLabors.ImageSharp.PixelFormats;
     using SixLabors.ImageSharp.Processing;
     using System;
+    using System.Configuration;
     using System.Collections.Generic;
     using System.Runtime.ConstrainedExecution;
     using static System.Net.Mime.MediaTypeNames;
@@ -41,6 +42,8 @@
 
         public static int MaxContainFactions => 2;
 
+        public string fontName { get; private set; }
+
         public Deck(string deckcode, Metadata metadata)
         {
             List<CardCodeAndCount> cardCodeAndCounts = LoRDeckEncoder.GetDeckFromCode(deckcode);
@@ -63,6 +66,14 @@
             if (MyIcons.CardCountIconsSize != this.CardWidth / 4) MyIcons.ResizeCardCountIcons(this.CardWidth / 4);
             if (MyIcons.RegionIconsSize != this.CanvasWidth / 8) MyIcons.ResizeRegionIcons(this.CanvasWidth / 8);
             if (MyIcons.CardTypeIconsSize != this.CanvasWidth / 10) MyIcons.ResizeCardTypeIcons(this.CanvasWidth / 10);
+
+            Dictionary<string, string> SetConfig = new Dictionary<string, string>();
+            foreach (string key in ConfigurationManager.AppSettings.AllKeys)
+            {
+                SetConfig.Add(key, ConfigurationManager.AppSettings[key]);
+            }
+
+            this.fontName = SetConfig["Font"];
         }
 
         public Image<Rgba32> GetImage()
@@ -70,11 +81,10 @@
             Image<Rgba32> canvas = new Image<Rgba32>(this.CanvasWidth, this.CanvasHeight);
             canvas.Mutate(x => x.BackgroundColor(Color.Black));
 
-            const string FontName = "Arial";
             FontFamily fontFamily;
-            if (!SystemFonts.TryGet(FontName, out fontFamily))
+            if (!SystemFonts.TryGet(this.fontName, out fontFamily))
             {
-                throw new Exception($"Couldn't find font {FontName}");
+                throw new Exception($"Couldn't find font {this.fontName}");
             }
 
             float cardCountFontSize = (float)(MyIcons.BaseCircleSize * 0.7);

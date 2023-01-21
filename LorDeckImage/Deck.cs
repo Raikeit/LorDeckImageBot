@@ -316,21 +316,6 @@
             int maxDeckContainRegionKind = 2; // デッキに含まれる地域の最大数
             if (factions.Factions.Count > maxDeckContainRegionKind)
             {
-                List<FactionType> containTypes = factions.GetFactionTypes();
-
-                foreach (var card in championCards)
-                {
-                    foreach (var regionRef in card.Detail.regionRefs)
-                    {
-                        containTypes.Remove(FactionHelper.ConverFromString(regionRef));
-                    }
-                }
-
-                foreach (var type in containTypes)
-                {
-                    factions.Remove(type);
-                }
-
                 factions.SortAscendingOrder();
                 while (factions.Factions.Count > maxDeckContainRegionKind)
                 {
@@ -339,21 +324,56 @@
             }
 
             // ここまでで2地域まで絞ること(factions.Factions.Count <= 2)
+            int cardsCount = this.GetDeckCardCount();
+            int factionCount = 0;
+            // デュアル地域を重複カウントしてしまうので修正する
+            foreach (var faction in factions.Factions)
+            {
+                factionCount += faction.Count;
+            }
+
+            if (factionCount > cardsCount)
+            {
+                factions.Factions[1].Count -= factionCount - cardsCount;
+                if (factions.Factions[1].Count <= 0)
+                {
+                    factions.Factions.RemoveAt(1);
+                }
+            }
 
             // ルーンテラ地域対応
-            if (factions.Factions.Count == 1 && factions.Factions[0].Type == FactionType.Runeterra)
+            int runeterraChampionNum = 0;
+            foreach (var champion in championCards)
             {
-                factions.Factions[0].Count = this.GetDeckCardCount();
+                foreach (var regionRef in champion.Detail.regionRefs)
+                {
+                    if (FactionHelper.ConverFromString(regionRef) == FactionType.Runeterra)
+                    {
+                        runeterraChampionNum++;
+                    }
+                }
+            }
+
+            if (runeterraChampionNum >= 2)
+            {
+                factions.Factions[0].Count = cardsCount;
+                factions.Factions[0].Type = FactionType.Runeterra;
+                factions.Factions.RemoveAt(factions.Factions.Count - 1);
             }
             else if (factions.Factions.Count == 2)
             {
                 if (factions.Factions[0].Type == FactionType.Runeterra)
                 {
-                    factions.Factions[0].Count = this.GetDeckCardCount() - factions.Factions[1].Count;
+                    factions.Factions[0].Count = cardsCount - factions.Factions[1].Count;
                 }
                 else if (factions.Factions[1].Type == FactionType.Runeterra)
                 {
-                    factions.Factions[1].Count = this.GetDeckCardCount() - factions.Factions[0].Count;
+                    factions.Factions[1].Count = cardsCount - factions.Factions[0].Count;
+                }
+                else if (factions.Factions[0].Count + factions.Factions[1].Count < cardsCount)
+                {
+                    factions.Factions[1].Type = FactionType.Runeterra;
+                    factions.Factions[1].Count = cardsCount - factions.Factions[0].Count;
                 }
             }
             return factions;

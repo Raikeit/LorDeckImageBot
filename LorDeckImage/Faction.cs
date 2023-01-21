@@ -24,7 +24,7 @@
 
     public class Faction
     {
-        public FactionType Type { get; private set; }
+        public FactionType Type { get; set; }
 
         public int Count { get; set; }
 

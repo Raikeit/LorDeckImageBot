@@ -14,7 +14,7 @@
 
         public static List<string> SetsFileNames => new List<string>
         {
-            "set1", "set2", "set3", "set4", "set5", "set6", "set6cde"
+            "set1", "set2", "set3", "set4", "set5", "set6", "set6cde", "set7"
         };
 
         public string Locale { get; private set; }

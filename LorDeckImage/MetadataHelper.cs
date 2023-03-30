@@ -27,7 +27,8 @@
                 string.Format("https://dd.b.pvp.net/latest/set4-{0}.zip", locale),
                 string.Format("https://dd.b.pvp.net/latest/set5-{0}.zip", locale),
                 string.Format("https://dd.b.pvp.net/latest/set6-{0}.zip", locale),
-                string.Format("https://dd.b.pvp.net/latest/set6cde-{0}.zip", locale)
+                string.Format("https://dd.b.pvp.net/latest/set6cde-{0}.zip", locale),
+                string.Format("https://dd.b.pvp.net/latest/set7-{0}.zip", locale)
             };
         }
 

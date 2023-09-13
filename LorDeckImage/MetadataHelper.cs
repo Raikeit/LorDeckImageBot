@@ -21,15 +21,16 @@
             this.CoreSet = string.Format("https://dd.b.pvp.net/latest/core-{0}.zip", locale);
             this.Sets = new List<string>
             {
-                string.Format("https://dd.b.pvp.net/latest/set1-{0}.zip", locale),
-                string.Format("https://dd.b.pvp.net/latest/set2-{0}.zip", locale),
-                string.Format("https://dd.b.pvp.net/latest/set3-{0}.zip", locale),
-                string.Format("https://dd.b.pvp.net/latest/set4-{0}.zip", locale),
-                string.Format("https://dd.b.pvp.net/latest/set5-{0}.zip", locale),
-                string.Format("https://dd.b.pvp.net/latest/set6-{0}.zip", locale),
-                string.Format("https://dd.b.pvp.net/latest/set6cde-{0}.zip", locale),
-                string.Format("https://dd.b.pvp.net/latest/set7-{0}.zip", locale),
-                string.Format("https://dd.b.pvp.net/latest/set7b-{0}.zip", locale)
+                string.Format("https://dd.b.pvp.net/latest/set1-lite-{0}.zip", locale),
+                string.Format("https://dd.b.pvp.net/latest/set2-lite-{0}.zip", locale),
+                string.Format("https://dd.b.pvp.net/latest/set3-lite-{0}.zip", locale),
+                string.Format("https://dd.b.pvp.net/latest/set4-lite-{0}.zip", locale),
+                string.Format("https://dd.b.pvp.net/latest/set5-lite-{0}.zip", locale),
+                string.Format("https://dd.b.pvp.net/latest/set6-lite-{0}.zip", locale),
+                string.Format("https://dd.b.pvp.net/latest/set6cde-lite-{0}.zip", locale),
+                string.Format("https://dd.b.pvp.net/latest/set7-lite-{0}.zip", locale),
+                string.Format("https://dd.b.pvp.net/latest/set7b-lite-{0}.zip", locale),
+                string.Format("https://dd.b.pvp.net/latest/set8-lite-{0}.zip", locale),
             };
         }
 

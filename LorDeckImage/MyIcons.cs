@@ -64,6 +64,13 @@ namespace LorDeckImage
 
         public static void ResizeCardCountIcons(int size)
         {
+            CardCounts = new List<Image<Rgba32>>
+            {
+                Image.Load<Rgba32>(Path.Combine("img", "Count1.png")),
+                Image.Load<Rgba32>(Path.Combine("img", "Count2.png")),
+                Image.Load<Rgba32>(Path.Combine("img", "Count3.png")),
+            };
+            
             foreach (var icon in CardCounts)
             {
                 icon.Mutate(x => x.Resize(size, size));
